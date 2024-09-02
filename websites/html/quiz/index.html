@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+	<title>Quiz Game</title>
+</head>
+<body>
+	<div class = "start-screen" id = "startscreen"> 
+		<div class = "start-message"> WELCOME TO MY QUIZ</div>
+		<div class = "rules"> Some of the rules are: 
+			<div class = "info"> 1. You have <span>15</span> seconds for each question</div>
+			<div class = "info"> 2. There are 10 questions.</div>
+			<div class = "info"> 3. You can select an option once.</div>
+			<div class = "info"> 4. You can not exit once you start the quiz.</div>
+			<div class = "info"> 5. Each question contains one mark.</div>
+		</div>
+		<button class = "continue-btn" id = "btn">START</button>
+
+	</div>
+
+
+
+	<div class="quiz" id = "quiz1">
+		<div class="header">
+			All That Quiz
+		<div class="time" id="times">Time Left:
+			<div class="tick" id="ticks">15</div>
+		</div>
+		</div>
+
+		<div id="question">
+		<h3 id="ques">Question goes here</h3>
+
+		<div id="main">
+		    <div class="option">Answer 1</div>
+		    <div class="option">Answer 2</div>
+		    <div class="option">Answer 3</div>
+		    <div class="option">Answer 4</div>
+		</div>
+
+	  </div>
+        <div class="footer">
+        	<div class="count"><span id = "counter">1</span> of <strong>10</strong> questions
+        	<button id="Next">Next</button>
+            </div>
+        </div>
+	</div>
+
+	<script src="script.js"></script>
+
+</body>
+</html>

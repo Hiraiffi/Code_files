@@ -1,0 +1,225 @@
+#include<iostream>
+#include<string>
+#include<stack>
+using namespace std;
+
+class product
+{
+	public:
+		string ISBN;
+		float Price;
+		string Color;
+		string Brand;
+		int StorageCapacity;
+		int screenSize;
+		int CameraResolution;
+		string BatteryLife;
+		stack<string> reviews;
+		product *ptr;
+		product()
+		{
+			ISBN = " ";
+			Price = 0;
+			Color = " ";
+			Brand = " ";
+			StorageCapacity = 0;
+			screenSize = 0;
+			CameraResolution = 0;
+			BatteryLife = " ";
+			ptr = NULL;
+		}
+		product(string ISBN,float p,string col,string br,int storage,int screen,int camera,string battery)
+		{
+			this->ISBN=ISBN;
+			Price = p;
+			Color = col;
+			Brand = br;
+			StorageCapacity = storage;
+			screenSize = screen;
+			CameraResolution = camera;
+			BatteryLife = battery;
+			ptr = NULL;
+		}
+		void display()
+		{
+			cout<<"Price: "<<Price<<"\nColour: "<<Color<<"\nName: "<<Brand<<"\nStorage: "<<StorageCapacity<<"\nScreen Size: "<<screenSize<<"\nCamera resolution: "<<CameraResolution<<"\nBattery life: "<<BatteryLife<<endl;
+			cout.flush();
+		}
+};
+//circular linked list to display products
+class LLdisplay
+{
+	public:
+		product *head;
+		
+		LLdisplay()
+		{
+			head=NULL;
+		}
+		void insert(string ISBN,float p,string col,string br,int storage,int screen,int camera,string battery)
+		{
+			product *temp=head;
+			product *n=new product(ISBN,p,col,br,storage,screen,camera,battery);
+			if(temp==NULL)
+			{
+				head = n;
+				n->ptr=head;
+				return;
+			}
+			else
+			{
+				while(temp->ptr!=head)
+				{
+					temp=temp->ptr;
+				}
+				temp->ptr=n;
+				n->ptr=head;	
+			}
+		}
+};
+class shoppingcart
+{
+	public:
+	product *head;
+	int noofprod=0;
+	float totalcost=0.0;
+	shoppingcart()
+	{
+		head = NULL;
+	}
+	void additems(product *prod)
+	{
+		additems(prod->ISBN,prod->Price,prod->Color,prod->Brand,prod->StorageCapacity,prod->screenSize,prod->CameraResolution,prod->BatteryLife);
+	}
+	void additems(string ISBN,float p,string col,string br,int storage,int screen,int camera,string battery)
+	{
+		product *temp=head;
+		product *n=new product(ISBN,p,col,br,storage,screen,camera,battery);
+		totalcost+=p;
+		noofprod++;
+		if(temp==NULL)
+		{
+			head = n;
+			return;
+		}
+		else
+		{
+			while(temp->ptr!=NULL)
+			{
+				temp=temp->ptr;
+			}
+			temp->ptr=n;	
+		}
+	}
+	void deleteitems(string x)
+	{
+		if(head==NULL)
+		{
+			cout<<"Cart is currently empty"<<endl;
+			return;
+		}
+		else
+		{
+			product *curr=head->ptr;
+			product *prev=head;
+			//delete from beginning
+			if(prev->ISBN==x)
+			{
+				head=curr;
+				totalcost-=prev->Price;
+				noofprod--;
+				cout<<"Item: "<<prev->Brand<<" has been deleted successfully!!"<<endl;
+				delete prev;
+				return;
+			}
+			//delete from middle
+			while(curr!=NULL)
+			{
+				if(curr->ISBN==x)
+				{
+					prev->ptr = curr->ptr;
+					totalcost-=curr->Price;
+					noofprod--;
+					cout<<"Item: "<<curr->Brand<<" has been deleted successfully!!"<<endl;
+					delete curr;
+					curr=prev->ptr;
+					return;
+				}
+				prev = curr;
+				curr = curr->ptr;
+			}	
+			cout<<"This item does not exists in the cart"<<endl;
+		}
+	}
+	void print()
+	{
+		if(head==NULL)
+		{
+			cout<<"There are no items in this cart"<<endl;
+		}
+		else
+		{
+			product *temp=head;
+			cout<<"Total Cost: "<<totalcost<<endl;
+			cout<<"No of products: "<<noofprod<<endl;
+			cout<<"Items of your list are: "<<endl;
+			while(temp!=NULL)
+			{
+				temp->display();
+				cout<<endl;
+				temp = temp->ptr;
+			}
+			cout<<endl;
+		}
+	}
+	void checkout()
+	{
+		int ch;
+		print();
+		cout<<"What would be the payment method: \n1-By cash 2-By card";
+		cin>>ch;
+		if(ch==1)
+		{
+			cout<<"Please keep "<<totalcost<<" amount of money readyyy!!"<<endl;
+		}
+		if(ch==2)
+		{
+			int num;
+			int pincode;
+			cout<<"Enter the details of your card: "<<endl;
+			cout<<"Enter your Card number: "<<endl;
+			cin>>num;
+			cout<<"Your pin code: "<<endl;
+			cin>>pincode;
+			cout<<"Your order has been paid. Thank you for shopping!!"<<endl;
+		}
+	}
+};
+void Menu()
+{
+	LLdisplay l;
+	char choice,ch;
+	product *temp=l.head;
+	int i=1;
+	do
+	{
+		cout<<"\t("<<i++<<")"<<endl;
+		temp->display();	
+		temp=temp->ptr;
+	}
+	while(temp!=l.head);
+	while(1)
+	{
+		cout<<"Which product do you want to buy: Choose from the products and press N for : ";
+	}
+}
+int main()
+{
+	shoppingcart c;
+	c.additems("978123456",199.99,"Space Gray","TechElite",126,14,720,"Upto 10 hours");
+	c.additems("978123433",899.99,"Silver","SwiftStream",256,13.3,1080,"Upto 12 hours");
+	c.additems("1534646",499.99,"Midnight Black","QuantumEdge",1,15,6,"Upto 8 hours");
+	c.print();
+	c.checkout();
+	return 0;
+}
